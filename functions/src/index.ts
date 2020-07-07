@@ -1,29 +1,28 @@
-import { https } from "firebase-functions";
-import { firestore, initializeApp } from "firebase-admin";
-import express, { Application, Request, Response, NextFunction } from "express";
-import { urlencoded } from "body-parser";
-import { ProductsRoutes } from "./routes/products.route";
+import { https } from 'firebase-functions';
+import { firestore, initializeApp } from 'firebase-admin';
+import express, { Application, Request, Response, NextFunction } from 'express';
+import { urlencoded } from 'body-parser';
+import { ProductsRoutes } from './routes/products.route';
+import { checkToken } from './middlewares/checktoken';
 
 class App {
   public app: Application;
   public db: firestore.Firestore;
-  public userCollection = "users";
+  public userCollection = 'users';
   public productsRoutes = new ProductsRoutes();
   constructor() {
     initializeApp();
     this.app = express();
     this.db = firestore();
     this.config();
+    this.app.use(checkToken);
     this.productsRoutes.routes(this.app, this.db);
   }
   private config(): void {
     this.app.use((req: Request, res: Response, next: NextFunction) => {
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Headers", "*");
-      res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET, POST, OPTIONS, PUT, PATCH,DELETE"
-      );
+      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Headers', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH,DELETE');
       next();
     });
     this.app.use(urlencoded({ extended: false }));
