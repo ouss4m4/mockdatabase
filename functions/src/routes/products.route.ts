@@ -7,6 +7,9 @@ export class ProductsRoutes {
   public routes(app: Application, db: firestore.Firestore): void {
     app
       .route('/products')
-      .get(async (req: Request, res: Response) => this.productsController.getUsers(req, res, db));
+      .get((req: Request, res: Response) => this.productsController.getProducts(req, res, db));
+    app
+      .route('/products')
+      .post((req: Request, res: Response) => this.productsController.postProduct(req, res, db));
   }
 }

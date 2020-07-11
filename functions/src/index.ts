@@ -35,6 +35,9 @@ class App {
         next();
       });
     });
+    console.log('aegaeh');
+
+    console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS);
   }
 }
 
