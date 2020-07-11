@@ -1,6 +1,6 @@
-import { IProductDetail } from './models';
+import { Product } from '../entities';
 
-export const checkIfProductIsValid = (product: IProductDetail): boolean => {
+export const checkIfProductIsValid = (product: Product): boolean => {
   if (product.ItemCode.trim().length !== 6) {
     return false;
   }

@@ -1,22 +1,16 @@
 import { https } from 'firebase-functions';
-import { firestore, initializeApp } from 'firebase-admin';
 import express, { Application, Request, Response, NextFunction } from 'express';
 import { urlencoded } from 'body-parser';
-import { ProductsRoutes } from './routes/products.route';
+import { productsRoute } from './routes/products.route';
 import { checkToken } from './middlewares/checktoken';
 
 class App {
   public app: Application;
-  public db: firestore.Firestore;
-  public userCollection = 'users';
-  public productsRoutes = new ProductsRoutes();
   constructor() {
-    initializeApp();
     this.app = express();
-    this.db = firestore();
     this.config();
     this.app.use(checkToken);
-    this.productsRoutes.routes(this.app, this.db);
+    productsRoute.routes(this.app);
   }
   private config(): void {
     this.app.use((req: Request, res: Response, next: NextFunction) => {
@@ -35,9 +29,6 @@ class App {
         next();
       });
     });
-    console.log('aegaeh');
-
-    console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS);
   }
 }
 

@@ -1,15 +1,14 @@
 import { Application, Request, Response } from 'express';
-import { firestore } from 'firebase-admin';
 import { ProductsController } from '../controllers/products.controllers';
 
-export class ProductsRoutes {
+class ProductsRoutes {
   public productsController = new ProductsController();
-  public routes(app: Application, db: firestore.Firestore): void {
+  public routes(app: Application): void {
     app
       .route('/products')
-      .get((req: Request, res: Response) => this.productsController.getProducts(req, res, db));
-    app
-      .route('/products')
-      .post((req: Request, res: Response) => this.productsController.postProduct(req, res, db));
+      .get((req: Request, res: Response) => this.productsController.getProducts(req, res))
+      .post((req: Request, res: Response) => this.productsController.postProduct(req, res));
   }
 }
+
+export const productsRoute = new ProductsRoutes();
